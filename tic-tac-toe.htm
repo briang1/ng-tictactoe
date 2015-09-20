@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>TIC TAC TOE</title>
+    <meta name="viewport" media="screen only " content=" width=device-width, initial-scale=1">
+    <meta name="description" content="A game by Nathan Goullette (9/18/15)">
+
+    <style>
+        #gameBoard {
+            width: 640px;
+            margin-top: 50px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #gameBoard .row input {
+            height: 200px;
+            width: 200px;
+            margin: 5px;
+            font: 5em Arial;
+            color: #ffffff;
+            vertical-align: top;
+            cursor: pointer;
+            border: 0px outset buttonface;
+        }
+        input:disabled {
+            background-color: #ff0000;
+        }
+        .reset {
+            margin-top: 10px;
+            position: relative;
+        }
+        .reset input {
+            position: absolute;
+            right: 7px;
+        }
+        @media screen and (max-width: 320px) {
+            #gameBoard {
+                width: 280px;
+                margin-top: 80px !important;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            #gameBoard {
+                width: 280px;
+                margin-top: 10px;
+            }
+            #gameBoard .row input {
+                height: 80px;
+                width: 80px;
+                font: 4em Arial;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameBoard">
+        <div class="row">
+            <input type="button" id="space0" onclick="setSquare(this)" value="" />
+            <input type="button" id="space1" onclick="setSquare(this)" value="" />
+            <input type="button" id="space2" onclick="setSquare(this)" value="" />
+        </div>
+        <div class="row">
+            <input type="button" id="space3" onclick="setSquare(this)" value="" />
+            <input type="button" id="space4" onclick="setSquare(this)" value="" />
+            <input type="button" id="space5" onclick="setSquare(this)" value="" />
+        </div>
+        <div class="row">
+            <input type="button" id="space6" onclick="setSquare(this)" value="" />
+            <input type="button" id="space7" onclick="setSquare(this)" value="" />
+            <input type="button" id="space8" onclick="setSquare(this)" value="" />
+        </div>
+        <div class="reset"><input type="button" id="reStart" onclick="reStart()" value="RESTART" /></div>
+    </div>
+    
+<script>
+    // Game Board Squares
+    var boardSquare = [];
+    for (var i = 0; i < 9; i++)
+        boardSquare.push(document.getElementById('space' + i));
+
+    var x = "X";
+    var o = "O";
+
+    // Player's turn: X/O. Later this could be three objects: current player that switches between player 1 and 2. Also there could be a best out of n games/tournament style play mode.
+    function setSquare(square) {
+        var b = x;
+        x = o;
+        o = b;
+
+        // Set the gamespace square to X, or O
+        if (square.value == "") {
+            square.value = b;
+        }
+
+        if (square.value == x, o) {
+            square.disabled = true;
+        }
+
+        if (square.value == 'X') {
+            square.style.backgroundColor = 'red';
+        } else {
+            square.style.backgroundColor = 'black';
+        }
+
+        // See if there's a winner
+        var player = winner();
+
+        if (player) {
+            alert(player + ' is the winner!');
+            reStart();
+        } else {
+            // Detect if the game is over, if true it's a tie game
+            var foundEmptyTile = false;
+
+            for (var i = 0; i < boardSquare.length; i++) {
+                if (boardSquare[i].value == '') {
+                    foundEmptyTile = true;
+                    break;
+                }
+            }
+
+            if (!foundEmptyTile) {
+                alert('It\'s a Cat\'s game! There\'s no winner.');
+                reStart();
+            }
+        }
+    }
+
+    // Check to see if there's a winner and alert to convey who won. Later this could be algorithmically determined using pathing like A*/Star.
+    function winner() {
+        // Top Row
+        if (boardSquare[0].value == 'X' && boardSquare[1].value == 'X' && boardSquare[2].value == 'X') {
+            return 'X';
+        } else if (boardSquare[0].value == 'O' && boardSquare[1].value == 'O' && boardSquare[2].value == 'O') {
+            return 'O';
+        }
+        // Middle Row
+        if (boardSquare[3].value == 'X' && boardSquare[4].value == 'X' && boardSquare[5].value == 'X') {
+            return 'X';
+        } else if (boardSquare[3].value == 'O' && boardSquare[4].value == 'O' && boardSquare[5].value == 'O') {
+            return 'O';
+        }
+        // Bottom Row
+        if (boardSquare[6].value == 'X' && boardSquare[7].value == 'X' && boardSquare[8].value == 'X') {
+            return 'X';
+        } else if (boardSquare[6].value == 'O' && boardSquare[7].value == 'O' && boardSquare[8].value == 'O') {
+            return 'O';
+        }
+        // Left Column
+        if (boardSquare[0].value == 'X' && boardSquare[3].value == 'X' && boardSquare[6].value == 'X') {
+            return 'X';
+        } else if (boardSquare[0].value == 'O' && boardSquare[3].value == 'O' && boardSquare[6].value == 'O') {
+            return 'O';
+        }
+        // Middle Column
+        if (boardSquare[1].value == 'X' && boardSquare[4].value == 'X' && boardSquare[7].value == 'X') {
+            return 'X';
+        } else if (boardSquare[1].value == 'O' && boardSquare[4].value == 'O' && boardSquare[7].value == 'O') {
+            return 'O';
+        }
+        // Right Column
+        if (boardSquare[2].value == 'X' && boardSquare[5].value == 'X' && boardSquare[8].value == 'X') {
+            return 'X';
+        } else if (boardSquare[2].value == 'O' && boardSquare[5].value == 'O' && boardSquare[8].value == 'O') {
+            return 'O';
+        }
+        // Right Diagonal
+        if (boardSquare[0].value == 'X' && boardSquare[4].value == 'X' && boardSquare[8].value == 'X') {
+            return 'X';
+        } else if (boardSquare[0].value == 'O' && boardSquare[4].value == 'O' && boardSquare[8].value == 'O') {
+            return 'O';
+        }
+        // Left Diagonal
+        if (boardSquare[2].value == 'X' && boardSquare[4].value == 'X' && boardSquare[6].value == 'X') {
+            return 'X';
+        } else if (boardSquare[2].value == 'O' && boardSquare[4].value == 'O' && boardSquare[6].value == 'O') {
+            return 'O';
+        }
+
+        return null;
+    }
+
+    // Reset/Start new game
+    function reStart() {
+        var newGame = document.getElementById('reStart');
+        for (i = 0; i < boardSquare.length; i++) {
+            if (boardSquare[i].value == "X", "O") {
+                boardSquare[i].value = "";
+                boardSquare[i].disabled = false;
+                boardSquare[i].style.backgroundColor = 'buttonface';
+            }
+        }
+    }
+
+</script>
+</body>
+</html>
