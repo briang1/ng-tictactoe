@@ -126,55 +126,35 @@
         }
     }
 
+    function checkWinner(s1, s2, s3){
+        var ret_val = null;
+        if (boardSquare[s1].value == 'X' && boardSquare[s2].value == 'X' && boardSquare[s3].value == 'X') {
+            ret_val = 'X';
+        } else if (boardSquare[s1].value == 'O' && boardSquare[s2].value == 'O' && boardSquare[s3].value == 'O') {
+            ret_val = 'O';
+        }
+        return ret_val;
+    }
+
     // Check to see if there's a winner and alert to convey who won. Later this could be algorithmically determined using pathing like A*/Star.
     function winner() {
-        // Top Row
-        if (boardSquare[0].value == 'X' && boardSquare[1].value == 'X' && boardSquare[2].value == 'X') {
-            return 'X';
-        } else if (boardSquare[0].value == 'O' && boardSquare[1].value == 'O' && boardSquare[2].value == 'O') {
-            return 'O';
-        }
-        // Middle Row
-        if (boardSquare[3].value == 'X' && boardSquare[4].value == 'X' && boardSquare[5].value == 'X') {
-            return 'X';
-        } else if (boardSquare[3].value == 'O' && boardSquare[4].value == 'O' && boardSquare[5].value == 'O') {
-            return 'O';
-        }
-        // Bottom Row
-        if (boardSquare[6].value == 'X' && boardSquare[7].value == 'X' && boardSquare[8].value == 'X') {
-            return 'X';
-        } else if (boardSquare[6].value == 'O' && boardSquare[7].value == 'O' && boardSquare[8].value == 'O') {
-            return 'O';
-        }
-        // Left Column
-        if (boardSquare[0].value == 'X' && boardSquare[3].value == 'X' && boardSquare[6].value == 'X') {
-            return 'X';
-        } else if (boardSquare[0].value == 'O' && boardSquare[3].value == 'O' && boardSquare[6].value == 'O') {
-            return 'O';
-        }
-        // Middle Column
-        if (boardSquare[1].value == 'X' && boardSquare[4].value == 'X' && boardSquare[7].value == 'X') {
-            return 'X';
-        } else if (boardSquare[1].value == 'O' && boardSquare[4].value == 'O' && boardSquare[7].value == 'O') {
-            return 'O';
-        }
-        // Right Column
-        if (boardSquare[2].value == 'X' && boardSquare[5].value == 'X' && boardSquare[8].value == 'X') {
-            return 'X';
-        } else if (boardSquare[2].value == 'O' && boardSquare[5].value == 'O' && boardSquare[8].value == 'O') {
-            return 'O';
-        }
-        // Right Diagonal
-        if (boardSquare[0].value == 'X' && boardSquare[4].value == 'X' && boardSquare[8].value == 'X') {
-            return 'X';
-        } else if (boardSquare[0].value == 'O' && boardSquare[4].value == 'O' && boardSquare[8].value == 'O') {
-            return 'O';
-        }
-        // Left Diagonal
-        if (boardSquare[2].value == 'X' && boardSquare[4].value == 'X' && boardSquare[6].value == 'X') {
-            return 'X';
-        } else if (boardSquare[2].value == 'O' && boardSquare[4].value == 'O' && boardSquare[6].value == 'O') {
-            return 'O';
+
+        var grid = [
+            [0, 1, 2],  // Top Row
+            [3, 4, 5],  // Mid Row
+            [6, 7, 8],  // Btm Row
+            [0, 3, 6],  // Left Col
+            [1, 4, 7],  // Mid Col
+            [2, 5, 8],  // Right Col
+            [0, 4, 8],  // Right Diagonal
+            [2, 4, 6]   // Left Diagonal
+        ];
+        var gridLength = grid.length;
+
+        for (var i = 0; i < gridLength; i++){
+            var val = checkWinner(grid[i][0], grid[i][1], grid[i][2]);
+            if (val)
+                return val;
         }
 
         return null;
