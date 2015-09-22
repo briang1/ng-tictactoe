@@ -8,30 +8,21 @@
     <style>
         #gameBoard {
             width: 640px;
-            margin-top: 50px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 50px auto 0;
         }
         #gameBoard .row input {
             height: 200px;
             width: 200px;
             margin: 5px;
             font: 5em Arial;
-            color: #ffffff;
+            color: #fff;
             vertical-align: top;
             cursor: pointer;
-            border: 0px outset buttonface;
-        }
-        input:disabled {
-            background-color: #ff0000;
+            border: 0 outset buttonface;
         }
         .reset {
-            margin-top: 10px;
-            position: relative;
-        }
-        .reset input {
-            position: absolute;
-            right: 7px;
+            margin: 10px 7px 0 0;
+            text-align: right;
         }
         @media screen and (max-width: 320px) {
             #gameBoard {
