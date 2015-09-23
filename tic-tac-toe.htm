@@ -9,6 +9,7 @@
         #gameBoard {
             width: 640px;
             margin: 50px auto 0;
+            text-align: right;
         }
         #gameBoard .row input {
             height: 200px;
@@ -21,8 +22,7 @@
             border: 0 outset buttonface;
         }
         .reset {
-            margin: 10px 7px 0 0;
-            text-align: right;
+            margin: 5px 7px 0 0;
         }
         @media screen and (max-width: 320px) {
             #gameBoard {
@@ -44,38 +44,62 @@
     </style>
 </head>
 <body>
-    <div id="gameBoard">
-        <div class="row">
-            <input type="button" id="space0" onclick="setSquare(this)" value="" />
-            <input type="button" id="space1" onclick="setSquare(this)" value="" />
-            <input type="button" id="space2" onclick="setSquare(this)" value="" />
-        </div>
-        <div class="row">
-            <input type="button" id="space3" onclick="setSquare(this)" value="" />
-            <input type="button" id="space4" onclick="setSquare(this)" value="" />
-            <input type="button" id="space5" onclick="setSquare(this)" value="" />
-        </div>
-        <div class="row">
-            <input type="button" id="space6" onclick="setSquare(this)" value="" />
-            <input type="button" id="space7" onclick="setSquare(this)" value="" />
-            <input type="button" id="space8" onclick="setSquare(this)" value="" />
-        </div>
-        <div class="reset"><input type="button" id="reStart" onclick="reStart()" value="RESTART" /></div>
-    </div>
-    
-<script>
-    // Game Board Squares
-    var boardSquare = [];
-    for (var i = 0; i < 9; i++)
-        boardSquare.push(document.getElementById('space' + i));
 
+    <div id="gameBoard"></div>
+
+    <script>
+
+    var boardSquare = [];
     var x = "X";
     var o = "O";
     var current = [x, o];
     var turnCount = 0;
 
-    // Player's turn: X/O. Later this could be three objects: current player that switches between player 1 and 2. Also there could be a best out of n games/tournament style play mode.
+    function init(){
+        /**
+         * Initialize game by generating gameBoard markup.
+         */
+
+        var gameBoard = document.getElementById('gameBoard');
+        for (var i = 0; i < 9; i++){
+
+            // create a row div every 3 squares
+            if (i % 3 == 0){
+                var rowDiv = document.createElement('div');
+                rowDiv.className = "row";
+            }
+
+            // create each game square, appending to row
+            var spaceBtn = document.createElement('input');
+            spaceBtn.type = "button";
+            spaceBtn.value = "";
+            spaceBtn.onclick = setSquare;
+            boardSquare.push(spaceBtn);
+            rowDiv.appendChild(spaceBtn);
+
+            // append the row div to gameBoard after 3 squares added
+            if (i % 3 == 0){
+                gameBoard.appendChild(rowDiv);
+            }
+        }
+
+        var restartBtn = document.createElement('input');
+        restartBtn.type = "button";
+        restartBtn.value = "RESTART";
+        restartBtn.className = "reset";
+        restartBtn.onclick = reStart;
+        gameBoard.appendChild(restartBtn);
+    }
+
     function setSquare(square) {
+        /**
+         * Player's turn: X/O. Later this could be three objects: current player that switches between player 1 and 2.
+         * Also there could be a best out of n games/tournament style play mode.
+         */
+
+        if (typeof square.nodeName == "undefined"){
+            square = this;
+        }
 
         // Set the gamespace square to X, or O
         if (square.value == "") {
@@ -128,8 +152,11 @@
         return ret_val;
     }
 
-    // Check to see if there's a winner and alert to convey who won. Later this could be algorithmically determined using pathing like A*/Star.
     function winner() {
+        /**
+         * Check to see if there's a winner and alert to convey who won.
+         * Later this could be algorithmically determined using pathing like A* / Star.
+         */
 
         var grid = [
             [0, 1, 2],  // Top Row
@@ -155,16 +182,14 @@
     // Reset/Start new game
     function reStart() {
         turnCount = 0;
-        // var newGame = document.getElementById('reStart');
-        for (i = 0; i < boardSquare.length; i++) {
-            if (boardSquare[i].value == x, o) {
-                boardSquare[i].value = "";
-                boardSquare[i].disabled = false;
-                boardSquare[i].style.backgroundColor = 'buttonface';
-            }
+        for (var i = 0; i < boardSquare.length; i++) {
+            boardSquare[i].value = "";
+            boardSquare[i].disabled = false;
+            boardSquare[i].style.backgroundColor = 'buttonface';
         }
     }
 
-</script>
+    init();
+    </script>
 </body>
 </html>
