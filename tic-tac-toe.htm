@@ -91,15 +91,13 @@
         gameBoard.appendChild(restartBtn);
     }
 
-    function setSquare(square) {
+    function setSquare() {
         /**
          * Player's turn: X/O. Later this could be three objects: current player that switches between player 1 and 2.
          * Also there could be a best out of n games/tournament style play mode.
          */
 
-        if (typeof square.nodeName == "undefined"){
-            square = this;
-        }
+        var square = this;
 
         // Set the gamespace square to X, or O
         if (square.value == "") {
